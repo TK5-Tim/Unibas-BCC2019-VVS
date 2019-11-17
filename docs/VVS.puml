@@ -1,12 +1,40 @@
 @startuml VVS_classes
-class Vorsorge
-class OrgaChange
-class Info
-class Identifikation
-class Hashing
+class Vorsorge {
+    address orgaFrom
+    uint kundeSV
+    String[] transDetails
+    function changeOrga(adress _orgaFrom, uint _KundeSV, String[] _transDetails)
+    function getInfo(uint _KundeSV)  public view returns(String[])
+}
+class OrgaChange {
+    address orgaTo
+    address orgaFrom
+    uint kundeSV
+    String[] transDetails
+    function changeOrga(adress _orgaFrom, uint _KundeSV, String[] _transDetails)
+}
+class Info {
+    uint kundeSV
+    function verifyID(uint _KundeSV) public view returns(bool)
+    function getInfo(uint _KundeSV) public view returns(String[])
+}
+class Identifikation {
+    uint kundeSV
+    function verifyID(uint _KundeSV) public view returns(bool)
+}
+class Hashing {
+    String[] transDetails 
+    address orgaTo
+    address orgaFrom
+    uint kundeSV 
+    struct infos 
+    function hashInfos(struct infos) public view returns(int)
+    function dehashInfos(int hash) public view returns(struct)
+}
 Vorsorge --> OrgaChange : delegatecall
 Vorsorge --> Info : delegatecall
 OrgaChange --> Identifikation : delegatecall
+Info --> Identifikation: delegatecall
 Info --> Hashing: delegatecall
 OrgaChange --> Hashing: delegatecall
 
