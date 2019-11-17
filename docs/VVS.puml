@@ -1,0 +1,13 @@
+@startuml VVS_classes
+class Vorsorge
+class OrgaChange
+class Info
+class Identifikation
+class Hashing
+Vorsorge --> OrgaChange : delegatecall
+Vorsorge --> Info : delegatecall
+OrgaChange --> Identifikation : delegatecall
+Info --> Hashing: delegatecall
+OrgaChange --> Hashing: delegatecall
+
+@enduml
