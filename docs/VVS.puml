@@ -12,11 +12,12 @@ class OrgaChange {
     uint kundeSV
     String[] transDetails
     function changeOrga(adress _orgaFrom, uint _KundeSV, String[] _transDetails)
+    function selectOrga(address _orgaTo) returns view (address)
 }
 class Info {
     uint kundeSV
-    function verifyID(uint _KundeSV) public view returns(bool)
     function getInfo(uint _KundeSV) public view returns(String[])
+    function searchInfo(uint KundeSV) public view returns(int)
 }
 class Identifikation {
     uint kundeSV
@@ -33,9 +34,9 @@ class Hashing {
 }
 Vorsorge --> OrgaChange : delegatecall
 Vorsorge --> Info : delegatecall
-OrgaChange --> Identifikation : delegatecall
-Info --> Identifikation: delegatecall
-Info --> Hashing: delegatecall
-OrgaChange --> Hashing: delegatecall
+OrgaChange --> Identifikation : call
+Info --> Identifikation: call
+Info --> Hashing: call
+OrgaChange --> Hashing: call
 
 @enduml

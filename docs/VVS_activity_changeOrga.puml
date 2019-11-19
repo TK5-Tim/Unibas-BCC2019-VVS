@@ -1,0 +1,16 @@
+@startuml Aktivitätsdiagram ChangeOrga 
+(*) -->[call] "changeOrga in Klasse Vorsorge"
+ --> [delegated call]"changeOrga in Klasse OrgaChange"
+
+ --> [call]"selectOrga" 
+ --> [call]"verifyID" 
+ if "ID correct" then 
+    --> [true]"return orgaTo" as a1
+ else 
+ ->[false](*)
+endif
+ a1 -->[call] "hashInfos"
+ --> "write Hash to chain"
+ --> [return] "newOrga Adress" 
+ -->(*)
+@enduml

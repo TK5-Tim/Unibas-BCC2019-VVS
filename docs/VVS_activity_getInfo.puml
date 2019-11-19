@@ -1,0 +1,15 @@
+@startuml Aktivitätsdiagram getInfo
+(*) -->[call] "getInfo in Klasse Vorsorge"
+ --> [delegated call]"getInfo in Klasse Info"
+ if "ID correct" then 
+    --> [true]"start search" as a1
+ else 
+ ->[false](*)
+ endif 
+ a1 -->[call] "searchInfo" 
+ --> "searchAlgorithm Quicksort" 
+ --> [return] "infos as hash" 
+ --> [call] "dehashInfos"
+ --> [return] "String[] Transaktionsinfos"
+ -->(*)
+@enduml
