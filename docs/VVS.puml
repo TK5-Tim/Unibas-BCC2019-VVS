@@ -2,35 +2,35 @@
 class Vorsorge {
     address orgaFrom
     uint kundeSV
-    String[] transDetails
-    function changeOrga(adress _orgaFrom, uint _KundeSV, String[] _transDetails)
+    struct TransactionDetails
+    function changeOrga(adress _orgaFrom, uint _KundeSV, TransactionDetails _transDetails)
     function getInfo(uint _KundeSV)  public view returns(String[])
 }
 class OrgaChange {
     address orgaTo
     address orgaFrom
     uint kundeSV
-    String[] transDetails
-    function changeOrga(adress _orgaFrom, uint _KundeSV, String[] _transDetails)
+    struct TransactionDetails
+    function changeOrga(adress _orgaFrom, uint _KundeSV,TransactionDetails _transDetails)
     function selectOrga(address _orgaTo) returns view (address)
 }
 class Info {
     uint kundeSV
-    function getInfo(uint _KundeSV) public view returns(String[])
-    function searchInfo(uint KundeSV) public view returns(int)
+    function getInfo(uint _KundeSV, uint _Zeitspempel) public view returns(infos)
+    function searchInfo(uint _Zeitstempel) public view returns(int)
 }
 class Identifikation {
     uint kundeSV
     function verifyID(uint _KundeSV) public view returns(bool)
 }
 class Hashing {
-    String[] transDetails 
+    struct TransactionDetails 
     address orgaTo
     address orgaFrom
     uint kundeSV 
     struct infos 
     function hashInfos(struct infos) public view returns(int)
-    function dehashInfos(int hash) public view returns(struct)
+    function dehashInfos(int hash) public view returns(infos)
 }
 Vorsorge --> OrgaChange : delegatecall
 Vorsorge --> Info : delegatecall

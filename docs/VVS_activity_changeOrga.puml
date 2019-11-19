@@ -11,6 +11,6 @@
 endif
  a1 -->[call] "hashInfos"
  --> "write Hash to chain"
- --> [return] "newOrga Adress" 
+ --> "destribute informations" 
  -->(*)
 @enduml

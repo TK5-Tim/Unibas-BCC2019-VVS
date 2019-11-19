@@ -7,9 +7,9 @@
  ->[false](*)
  endif 
  a1 -->[call] "searchInfo" 
- --> "searchAlgorithm Quicksort" 
+ --> "searchAlgorithm Quick-Find" 
  --> [return] "infos as hash" 
  --> [call] "dehashInfos"
- --> [return] "String[] Transaktionsinfos"
+ --> [return] "Transaktionsinfos"
  -->(*)
 @enduml
