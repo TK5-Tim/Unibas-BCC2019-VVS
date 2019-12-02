@@ -5,7 +5,7 @@ pragma solidity 0.4.26;
 // Contributors:
 //  Julian Mordig, Alex Walter und Tim Keller
 
-contract OrgaChange {
+contract VVS {
 
    // Declaration Start
 
@@ -13,13 +13,16 @@ contract OrgaChange {
        address id;
        string name;
    }
+
     orga[10] orgas;
+    bytes32[] hashs;
     string orgaFrom;
     string orgaTo;
     string orgaNow;
     uint kundeSV;
     uint balance;
     bool orgaChangeStarted;
+    uint transactionNr = 0;
     // Declaration End
 
 
@@ -29,7 +32,7 @@ contract OrgaChange {
     constructor() public {
 
         orgas[0].name = "Freizügigkeitsstiftung 1";
-        orgas[1].id = 0x2153F81fCFf291eC701A07647F81012ebd8A0f94;
+        orgas[1].id = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
         orgas[1].name = "Freizügigkeitsstiftung 2";
         orgas[2].id = 0xb6bBE3d6C76aE14c6B3A17DEaB98C9b17A612983;
         orgas[2].name = "Freizügigkeitsstiftung 3";
@@ -97,7 +100,9 @@ contract OrgaChange {
 
     function finishOrgaChange() private {
         if (getID()) {
+            transactionNr += 1;
             orgaNow = orgaTo;
+            hashs.push(getHash());
         }
         orgaChangeStarted = false;
     }
@@ -128,6 +133,16 @@ contract OrgaChange {
     function getCurrentOrga() public view returns (string) {
         return orgaNow;
     }
+
+    function getHash() public view returns(bytes32){
+        return keccak256(abi.encodePacked(orgaFrom, orgaTo, kundeSV, balance));
+    }
+
+    function verifyTrans(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
+        bytes32 inhash =  keccak256(abi.encodePacked(_orgaFrom, _orgaTo, _kundeSV, _balance));
+        bytes32 outhash = hashs[_ref-1];
+        return inhash == outhash;
+    }
     // Public Getters End
     // Private Getters Start
     // Dummy-Funktion, welche die zukünftige Funktionalität mit einer externen Identifizierung repräsentiert.
@@ -136,3 +151,4 @@ contract OrgaChange {
     }
     // Private Getters End
 }
+    
