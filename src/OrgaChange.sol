@@ -13,8 +13,7 @@ contract OrgaChange {
        uint id;
        string name;
    }
-    orga[5] fs_orga;
-    orga[5] pk_orga;
+    orga[10] orgas;
     string orgaFrom;
     string orgaTo;
     string orgaNow;
@@ -28,26 +27,26 @@ contract OrgaChange {
 
     //Constructor
     constructor() public {
-        fs_orga[0].id = 1;
-        fs_orga[0].name = "Freizügigkeitsstiftung 1";
-        fs_orga[1].id = 2;
-        fs_orga[1].name = "Freizügigkeitsstiftung 2";
-        fs_orga[2].id = 3;
-        fs_orga[2].name = "Freizügigkeitsstiftung 3";
-        fs_orga[3].id = 4;
-        fs_orga[3].name = "Freizügigkeitsstiftung 4";
-        fs_orga[4].id = 5;
-        fs_orga[5].name = "Freizügigkeitsstiftung 5";
-        pk_orga[0].id = 1;
-        pk_orga[0].name = "Pensionskasse 1";
-        pk_orga[1].id = 2;
-        pk_orga[1].name = "Pensionskasse 2";
-        pk_orga[2].id = 3;
-        pk_orga[2].name = "Pensionskasse 3";
-        pk_orga[3].id = 4;
-        pk_orga[3].name = "Pensionskasse 4";
-        pk_orga[4].id = 5;
-        pk_orga[4].name = "Pensionskasse 5";
+
+        orgas[0].name = "Freizügigkeitsstiftung 1";
+        orgas[1].id = 2;
+        orgas[1].name = "Freizügigkeitsstiftung 2";
+        orgas[2].id = 3;
+        orgas[2].name = "Freizügigkeitsstiftung 3";
+        orgas[3].id = 4;
+        orgas[3].name = "Freizügigkeitsstiftung 4";
+        orgas[4].id = 5;
+        orgas[4].name = "Freizügigkeitsstiftung 5";
+        orgas[5].id = 1;
+        orgas[5].name = "Pensionskasse 1";
+        orgas[6].id = 2;
+        orgas[6].name = "Pensionskasse 2";
+        orgas[7].id = 3;
+        orgas[7].name = "Pensionskasse 3";
+        orgas[8].id = 4;
+        orgas[8].name = "Pensionskasse 4";
+        orgas[9].id = 5;
+        orgas[9].name = "Pensionskasse 5";
         orgaChangeStarted = false;
     }
 
@@ -62,10 +61,15 @@ contract OrgaChange {
         require(orgaChangeStarted == true, "Organization Change was not started yet!");
         _;
     }
+    
+    modifier OrgaInNetwork(string _orga) {
+        require(orgaIsPart(_orga),"The Organization you choose is not part of the network");
+        _;
+    }
     // Modifiers End
 
     // Functions Start
-    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OrgaChangeNotActive {
+    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OrgaChangeNotActive OrgaInNetwork(_orgaFrom) {
         orgaFrom = _orgaFrom;
         orgaNow = orgaFrom;
         kundeSV = _kundeSV;
@@ -73,9 +77,12 @@ contract OrgaChange {
         orgaChangeStarted = true;
     }
 
-    function getOrga(string _orgaTo) public OrgaChangeInProgress {
+    function getOrga(string _orgaTo) public OrgaChangeInProgress OrgaInNetwork(_orgaTo) {
+        require(orgaIsPart(_orgaTo),"The Organization you choose is not part of the network");
+        if (orgaIsPart(_orgaTo)) {
         orgaTo = _orgaTo;
         finishOrgaChange();
+        }
     }
 
     function finishOrgaChange() private {
@@ -83,6 +90,16 @@ contract OrgaChange {
             orgaNow = orgaTo;
         }
         orgaChangeStarted = false;
+    }
+
+    function orgaIsPart(string _orga) public returns (bool) {
+        uint arrayLength = orgas.length;
+        for(uint i = 0;i < arrayLength; i++){
+            if(keccak256(abi.encodePacked((_orga))) == keccak256(abi.encodePacked((orgas[i].name)))){
+                return true;
+            }
+        }
+        return false;
     }
     // Functions End
 
