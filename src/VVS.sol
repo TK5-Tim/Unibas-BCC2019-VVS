@@ -13,9 +13,18 @@ contract VVS {
        address id;
        string name;
    }
+   
+   struct mem {
+       string orgaFrom; 
+       string orgaTo;
+       uint kundeSV; 
+       uint balance; 
+       uint transactionNr; 
+   }
 
     orga[10] orgas;
     bytes32[] hashs;
+    mem[] infoHub;
     string orgaFrom;
     string orgaTo;
     string orgaNow;
@@ -103,6 +112,13 @@ contract VVS {
             transactionNr += 1;
             orgaNow = orgaTo;
             hashs.push(getHash());
+            mem changeInfo;
+            changeInfo.orgaFrom = orgaFrom;
+            changeInfo.orgaTo = orgaTo;
+            changeInfo.kundeSV = kundeSV;
+            changeInfo.balance = balance; 
+            changeInfo.transactionNr = transactionNr;
+            infoHub.push(changeInfo);
         }
         orgaChangeStarted = false;
     }
@@ -138,10 +154,14 @@ contract VVS {
         return keccak256(abi.encodePacked(orgaFrom, orgaTo, kundeSV, balance));
     }
 
-    function verifyTrans(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
+    function getVerification(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
         bytes32 inhash =  keccak256(abi.encodePacked(_orgaFrom, _orgaTo, _kundeSV, _balance));
         bytes32 outhash = hashs[_ref-1];
         return inhash == outhash;
+    }
+
+    function getBalance(uint _transactionNr) public view returns(uint) {
+        return infoHub[_transactionNr-1].balance;
     }
     // Public Getters End
     // Private Getters Start
