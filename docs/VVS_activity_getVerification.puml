@@ -1,0 +1,12 @@
+@startuml Aktivitätsdiagram getVerification
+(*) -->[call] "getVerification() in Klasse Vorsorge"
+ --> [delegated call]"getVerification() in Klasse VerifyTransaction"
+  --> [call] "getVerification()"
+ if "ID correct" then 
+    --> [true]"check verification" as a1
+ else 
+ ->[false](*)
+ endif 
+ a1 --> [return] "Ergebnis der Verifikation"
+ -->(*)
+@enduml

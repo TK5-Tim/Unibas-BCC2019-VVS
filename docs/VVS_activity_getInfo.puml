@@ -1,15 +1,13 @@
 @startuml Aktivitätsdiagram getInfo
-(*) -->[call] "getInfo in Klasse Vorsorge"
- --> [delegated call]"getInfo in Klasse Info"
+(*) -->[call] "getBalance() oder getCurrentOrg() in Klasse Vorsorge"
+ --> [delegated call]"entsprechende Methode in Klasse Info"
+ --> [call] "getVerification()"
  if "ID correct" then 
     --> [true]"start search" as a1
  else 
  ->[false](*)
  endif 
- a1 -->[call] "searchInfo" 
- --> "searchAlgorithm Quick-Find" 
- --> [return] "infos as hash" 
- --> [call] "dehashInfos"
- --> [return] "Transaktionsinfos"
+ a1 -->[request] "Server jeweilige Organisation" 
+ --> [return] "erfragte Infos"
  -->(*)
 @enduml

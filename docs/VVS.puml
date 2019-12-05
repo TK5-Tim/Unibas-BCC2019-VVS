@@ -1,42 +1,54 @@
 @startuml VVS_classes
 class Vorsorge {
-    address orgaFrom
+    String orgaFrom
     uint kundeSV
-    struct TransactionDetails
-    function changeOrga(adress _orgaFrom, uint _KundeSV, TransactionDetails _transDetails)
-    function getInfo(uint _KundeSV)  public view returns(String[])
+    uint balance 
+    bool orgaChangeStarted 
+    struct orga 
+    orga[] orgas
+    String orgaTo
+    String orgaNow
+    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OnlyOrgas OrgaChangeNotActive OrgaInNetwork(_orgaFrom)
+    function orgaIsPart(string _orga) public returns (bool)
+    function addressIsPart(address _address) public returns (bool) 
+    function getCurrentOrga() public view returns (string) 
+    function getHash() public view returns(bytes32)
+    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) public NotEmpty OrgaInNetwork view returns(uint)
 }
 class OrgaChange {
-    address orgaTo
-    address orgaFrom
-    uint kundeSV
-    struct TransactionDetails
-    function changeOrga(adress _orgaFrom, uint _KundeSV,TransactionDetails _transDetails)
-    function selectOrga(address _orgaTo) returns view (address)
+    uint transactionNr
+    
+
+    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OnlyOrgas OrgaChangeNotActive OrgaInNetwork(_orgaFrom)
+    function getOrga(string _orgaTo) public NoOrgas OrgaChangeInProgress OrgaInNetwork(_orgaTo) 
+    function finishOrgaChange() private
+    function getHash() public view returns(bytes32)
+
+
+
+
 }
 class Info {
     uint kundeSV
-    function getInfo(uint _KundeSV, uint _Zeitspempel) public view returns(infos)
-    function searchInfo(uint _Zeitstempel) public view returns(int)
+    function getCurrentOrga() public view returns (string) 
+    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) public NotEmpty OrgaInNetwork view returns(uint)
 }
 class Identifikation {
-    uint kundeSV
     function verifyID(uint _KundeSV) public view returns(bool)
+    function getID() private view returns (bool)
+
 }
-class Hashing {
-    struct TransactionDetails 
-    address orgaTo
-    address orgaFrom
-    uint kundeSV 
-    struct infos 
-    function hashInfos(struct infos) public view returns(int)
-    function dehashInfos(int hash) public view returns(infos)
+class VerifyTransaction {
+
+function getVerification(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
+
 }
+
 Vorsorge --> OrgaChange : delegatecall
 Vorsorge --> Info : delegatecall
+Vorsorge --> VerifyTransaction : delegatecall 
 OrgaChange --> Identifikation : call
 Info --> Identifikation: call
-Info --> Hashing: call
-OrgaChange --> Hashing: call
+VerifyTransaction --> Identifikation: call
 
 @enduml
