@@ -1,5 +1,5 @@
 @startuml Aktivitätsdiagram getInfo
-(*) -->[call] "getBalance() oder getCurrentOrg() in Klasse Vorsorge"
+(*) -->[call] "getBalance()  in Klasse Vorsorge"
  --> [delegated call]"entsprechende Methode in Klasse Info"
  --> [call] "getVerification()"
  if "ID correct" then 
