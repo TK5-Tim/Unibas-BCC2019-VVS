@@ -7,7 +7,7 @@ pragma solidity 0.4.26;
 
 contract VVS {
 
-   // Declaration Start
+// Declaration Start
 
 // vereinfachte Struktur um eine Organisation darzustellen: Pensionskasse, Freizügigkeitsstiftung oder Auffangeinrichtung.
    struct orga {
@@ -47,13 +47,13 @@ contract VVS {
 
 // Dummy-Transaktionsnummer zur Referenzierung. System wird bei in Betriebnahme auch nochmal ausgearbeitet.
     uint transactionNr = 0;
-    // Declaration End
+// Declaration End
 
 
-    // -----------
+// -----------
 
-    //Constructor
-    // Diese Definitionen werden beim Deployment des Smart Contracts gemacht.
+//Constructor
+// Diese Definitionen werden beim Deployment des Smart Contracts gemacht.
     constructor() public {
 
         orgas[0].name = "Freizügigkeitsstiftung 1";
@@ -79,44 +79,44 @@ contract VVS {
     }
 
 
-    // Modifiers Start
-    // Überprüft, dass noch kein Organisationswechsel aktiv ist.
+// Modifiers Start
+// Überprüft, dass noch kein Organisationswechsel aktiv ist.
     modifier OrgaChangeNotActive() {
         require(orgaChangeStarted == false, "Organization Change is already in progress!");
         _;
     }
 
-    //Überprüft, dass ein Organisationswechsel aktiv ist.
+//Überprüft, dass ein Organisationswechsel aktiv ist.
     modifier OrgaChangeInProgress() {
         require(orgaChangeStarted == true, "Organization Change was not started yet!");
         _;
     }
     
-    // Überprüft, ob eine Angegebene Organisation auch Teil des Netzwerk ist.
+// Überprüft, ob eine Angegebene Organisation auch Teil des Netzwerk ist.
     modifier OrgaInNetwork(string _orga) {
         require(orgaIsPart(_orga),"The Organization you choose is not part of the network");
         _;
     }
 
-    //Überprüft, dass die entsprechende Funktion nur von Organisationen ausgelöst wird.
+//Überprüft, dass die entsprechende Funktion nur von Organisationen ausgelöst wird.
     modifier OnlyOrgas(){
         require(addressIsPart(msg.sender),"You are not allowed to trigger that function");
         _;
     }
 
-    //Überprüft, dass die entsprechende Funktion nicht von Organisationen ausgelöst wird.
+//Überprüft, dass die entsprechende Funktion nicht von Organisationen ausgelöst wird.
     modifier NoOrgas(){
         require(!addressIsPart(msg.sender),"You are not allowed to trigger that function");
         _;
     }
 
-    //Überprüft, dass schon mehr als eine Transaktion ausgelöst wurde.
+//Überprüft, dass schon mehr als eine Transaktion ausgelöst wurde.
     modifier NotEmpty(){
         require(transactionNr > 0, "Please make a transaction, there are no infos available");
     }
-    // Modifiers End
+// Modifiers End
 
-    // Functions Start
+// Functions Start
     //Organisationswechsel kann gestartet werden durch die alte Organisation.
     function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OnlyOrgas OrgaChangeNotActive OrgaInNetwork(_orgaFrom) {
         orgaFrom = _orgaFrom;
@@ -126,7 +126,7 @@ contract VVS {
         orgaChangeStarted = true;
     }
 
-    //Das Ziel des Organisationswechsel wird vom Vorsorgenehmer ausgewählt.
+//Das Ziel des Organisationswechsel wird vom Vorsorgenehmer ausgewählt.
     function getOrga(string _orgaTo) public NoOrgas OrgaChangeInProgress OrgaInNetwork(_orgaTo) {
         require(orgaIsPart(_orgaTo),"The Organization you choose is not part of the network");
         if (orgaIsPart(_orgaTo)) {
@@ -134,7 +134,7 @@ contract VVS {
         finishOrgaChange();
         }
     }
-    //Der Organisationswechsel wird abgeschlossen und an den entsprechenden Stellen festgehalten.
+//Der Organisationswechsel wird abgeschlossen und an den entsprechenden Stellen festgehalten.
     function finishOrgaChange() private {
         if (getID()) {
             transactionNr += 1;
@@ -150,7 +150,7 @@ contract VVS {
         }
         orgaChangeStarted = false;
     }
-    // Funktion zum Überprüfen, ob eine Organisation Teil des Systems ist. 
+// Funktion zum Überprüfen, ob eine Organisation Teil des Systems ist. 
     function orgaIsPart(string _orga) public returns (bool) {
         uint arrayLength = orgas.length;
         for(uint i = 0;i < arrayLength; i++){
@@ -161,7 +161,7 @@ contract VVS {
         return false;
     }
 
-    //Funktion zum Überprüfen ob eine Addresse Teil des Systems ist.
+//Funktion zum Überprüfen ob eine Addresse Teil des Systems ist.
     function addressIsPart(address _address) public returns (bool) {
         uint arrayLength = orgas.length;
         for(uint i = 0;i < arrayLength; i++){
@@ -171,36 +171,35 @@ contract VVS {
         }
         return false;
     }
-    // Functions End
+// Functions End
 
-    // Public Getters Start
-    // Funktion zum in Erfahrung bringen, welche Organisation der Vorsorgenehmer aktuell hat.
+// Public Getters Start
+// Funktion zum in Erfahrung bringen, welche Organisation der Vorsorgenehmer aktuell hat.
     function getCurrentOrga() public view returns (string) {
         return orgaNow;
     }
 
-    // Funktion zum in Erfahrunge bringen des aktuellen Hashes.
+// Funktion zum in Erfahrunge bringen des aktuellen Hashes.
     function getHash() public view returns(bytes32){
         return keccak256(abi.encodePacked(orgaFrom, orgaTo, kundeSV, balance));
     }
 
-    // Funktion zum Verifizieren einer Transaktion mit den entsprechenden Details. Über die Transaktionsnummer wird die entsprechende Transaktion referenziert.
+// Funktion zum Verifizieren einer Transaktion mit den entsprechenden Details. Über die Transaktionsnummer wird die entsprechende Transaktion referenziert.
     function getVerification(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
         bytes32 inhash = keccak256(abi.encodePacked(_orgaFrom, _orgaTo, _kundeSV, _balance));
         bytes32 outhash = hashs[_ref-1];
         return inhash == outhash;
     }
 
-    // Funktion zum Nachfragen bei der Organisation, wie hoch das aktuelle Pensionskassenvermögen ist. 
+// Funktion zum Nachfragen bei der Organisation, wie hoch das aktuelle Pensionskassenvermögen ist. 
     function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) public NotEmpty OrgaInNetwork view returns(uint) {
         return infoHub[_transactionNr-1].balance;
     }
-    // Public Getters End
-    // Private Getters Start
-    // Dummy-Funktion, welche die zukünftige Funktionalität mit einer externen Identifizierung repräsentiert.
+// Public Getters End
+// Private Getters Start
+// Dummy-Funktion, welche die zukünftige Funktionalität mit einer externen Identifizierung repräsentiert.
     function getID() private view returns (bool) {
         return true;
     }
-    // Private Getters End
+// Private Getters End
 }
-    

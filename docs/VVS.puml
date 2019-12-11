@@ -8,19 +8,19 @@ class Vorsorge {
     orga[] orgas
     String orgaTo
     String orgaNow
-    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OnlyOrgas OrgaChangeNotActive OrgaInNetwork(_orgaFrom)
+    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) 
     function orgaIsPart(string _orga) public returns (bool)
     function addressIsPart(address _address) public returns (bool) 
     function getCurrentOrga() public view returns (string) 
     function getHash() public view returns(bytes32)
-    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) public NotEmpty OrgaInNetwork view returns(uint)
+    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) 
 }
 class OrgaChange {
     uint transactionNr
     
 
-    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) public OnlyOrgas OrgaChangeNotActive OrgaInNetwork(_orgaFrom)
-    function getOrga(string _orgaTo) public NoOrgas OrgaChangeInProgress OrgaInNetwork(_orgaTo) 
+    function startOrgaChange(string _orgaFrom, uint _kundeSV, uint _balance) 
+    function getOrga(string _orgaTo) 
     function finishOrgaChange() private
     function getHash() public view returns(bytes32)
 
@@ -31,7 +31,7 @@ class OrgaChange {
 class Info {
     uint kundeSV
     function getCurrentOrga() public view returns (string) 
-    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) public NotEmpty OrgaInNetwork view returns(uint)
+    function getBalance(uint _transactionNr, string currOrga, uint _kundeSV) 
 }
 class Identifikation {
     function verifyID(uint _KundeSV) public view returns(bool)
@@ -40,7 +40,7 @@ class Identifikation {
 }
 class VerifyTransaction {
 
-function getVerification(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) public view returns(bool) {
+function getVerification(string _orgaFrom, string _orgaTo, int _kundeSV, int _balance, uint _ref) 
 
 }
 
