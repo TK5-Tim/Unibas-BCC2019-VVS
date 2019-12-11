@@ -23,4 +23,5 @@ Wird bald hinzugefügt:
 ## Acknowledgments
 
 * Vielen Dank an Prof. Dr. Aleksander Berentsen, Prof. Dr. Walter Dettling und Prof. Dr. Fabian Schär, sowie die Assistenten Tobias Wagner, Severin Scheiwiller und Raphael Knechtli, für die überragende Organisation dieser tollen Veranstaltung  
+* Link zu unserem Mockup: bit.ly/VVSApp
 * weitere Informationen zur Blockchain Challenge: https://wwz.unibas.ch/de/peopleandareas/dltfintech/blockchain-challenge-2019-3330/
