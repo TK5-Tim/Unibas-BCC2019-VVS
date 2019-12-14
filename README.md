@@ -6,6 +6,7 @@ Die heutige Welt ist zunehmend geprägt von Digitalisierung und Nachhaltigkeit. 
 ## Inhalt des Repositories
 
 Aktuell befinden sich folgende Dinge im Repository:
+* Slides der Gala-Präsentation zur Blockchain Challenge 2019 am 12.12.2019: https://github.com/TK5-Tim/Unibas-BCC2019-VVS/blob/master/Gala_Presentation_BCC2019_12_12_2019/Schlusspräsentation%20VVS%20PDF.pdf
 * Smart Contract als Beispiel-Implementierung des Systems
 * UML-Klassen- und -Sequenz-Diagramme zum Erklären der wichtigsten Abläufe. 
 
